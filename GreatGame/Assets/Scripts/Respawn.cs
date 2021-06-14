@@ -10,6 +10,6 @@ public class Respawn : MonoBehaviour
     [SerializeField] private Transform respawnPoint;  //reference a respawnPoint
     
     void OnTriggerEnter2D(Collider2D other){    //"Collider other" registers when another GameObject contacts the hitbox
-        player.transform.position = respawnPoint.transform.position; //just set the position of the player to the position of the respawnPoint
+        other.transform.position = respawnPoint.transform.position; //just set the position of the other to the position of the respawnPoint
     }
 }
