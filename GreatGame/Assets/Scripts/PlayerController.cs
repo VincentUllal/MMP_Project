@@ -8,8 +8,8 @@ namespace MMP.Mechanics
     public class PlayerController : KinematicObject
     {
 
-        public float maxSpeed = 7;
-        public float jumpTakeOffSpeed = 7;
+        public float maxSpeed = 8;
+        public float jumpTakeOffSpeed = 8;
         public JumpState jumpState = JumpState.Grounded;
 
         private SpriteRenderer spriteRenderer;
@@ -81,7 +81,7 @@ namespace MMP.Mechanics
                 stopJump = false;
                 if (velocity.y > 0)
                 {
-                    velocity.y = velocity.y * 0.5f;
+                    velocity.y *= 0.5f;
                 }
             }
 

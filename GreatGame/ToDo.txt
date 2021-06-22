@@ -1,0 +1,19 @@
+
+ToDo tonight.
+
+ - Interaction of Kinematic Objects.
+
+ - Set KinematicObject.cs as Backend to all moving things.
+
+ - Test Jumpstate progression
+
+ - Moving features:
+	x - snappier controlls
+	- Wall slides with shift
+	- Wall reflect without shift
+	- Wall jumps
+
+
+KinematicObjects what ifs:
+
+	X - Hit general object:

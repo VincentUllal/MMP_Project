@@ -17,10 +17,16 @@ namespace MMP.Mechanics
 {
     public class KinematicObject : MonoBehaviour
     {
+        public float hitForceMultiplier = 100f;
+        public float hitTorqueMultiplier = 10f;
+
         /* Adjustable variables:
+         * - weight: physical mass, used for inertia in collisions.
+         * - gravityModifier: Multiplier on default Physics2D.gravity.
          * - fallSpeedModifier: Lets the Object fall faster.
          * - minGroundnormalY: sets the stepest floor angle for the object to sit on. More than that and it will slip.
          */
+        public float gravityModifier = 2f;
         public float fallSpeedModifier = 1f;
         public float minGroundnormalY = 0.65f;
 
@@ -29,6 +35,9 @@ namespace MMP.Mechanics
          */
         protected const float minMoveDistance = 0.001f;
         protected const float shellRadius = 0.01f;
+
+        // Time keeping: Waiting, to stop pushing a DynamicObjec a dozen times instantly.
+        private float pauseTillTime;
 
         [SerializeField] protected Vector2 velocity;
         protected Vector2 nextVelocity;
@@ -83,6 +92,8 @@ namespace MMP.Mechanics
             contactFilter.useTriggers = false;
             contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
             contactFilter.useLayerMask = true;
+
+            pauseTillTime = Time.time;
         }
 
         /* Called every frame
@@ -113,26 +124,40 @@ namespace MMP.Mechanics
          */
         protected void FixedUpdate()
         {
+
             // 1
             if (velocity.y < 0)
-                velocity += fallSpeedModifier * Physics2D.gravity * Time.deltaTime;
+                velocity += fallSpeedModifier * gravityModifier * Time.deltaTime * Physics2D.gravity;
             else
-                velocity += Physics2D.gravity * Time.deltaTime;
+                velocity += gravityModifier * Time.deltaTime * Physics2D.gravity;
 
             // 2
             velocity.x = nextVelocity.x;
-            
+
             // 3
             IsGrounded = false;
 
             // 4
+            GameObject hitObject = null;
             var deltaPosition = velocity * Time.deltaTime;
             var move = new Vector2(groundNormal.y, -groundNormal.x) * deltaPosition.x;
-            PerformMovement(move, false);
+            var nextMoveModified = PerformMovement(move, false, ref hitObject);
 
             // 5
             move = Vector2.up * deltaPosition.y;
-            PerformMovement(move, true);
+            nextMoveModified += PerformMovement(move, true, ref hitObject);
+
+            if (hitObject != null)
+            {
+                if (string.Compare(hitObject.tag, "DynamicObject") == 0 && Time.time > pauseTillTime)
+                {
+                    if (string.Compare(hitObject.name, "FallingBlock") == 0) print("FOUND");
+                    AlterMovement(move, hitObject);
+                    pauseTillTime += Time.time + 0.1f;
+                }
+            }
+
+            body.position += nextMoveModified;
         }
 
         /* PerformMovement tests and adjusts for future collisions, split into horizontal and vertical.
@@ -149,57 +174,128 @@ namespace MMP.Mechanics
          * 7) shorten move distance to found object, repeat for all found objects, lock in the closest object.
          * 8) actually move body.
          */
-        void PerformMovement(Vector2 move, bool yMovement)
+        Vector2 PerformMovement(Vector2 move, bool yMovement, ref GameObject hitObject)
         {
             // 1
-            var distance = move.magnitude;
+            float distance = move.magnitude;
 
             if (distance > minMoveDistance)
             {
                 // 2
-                var count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
-                for (var i = 0; i < count; i++)
+                int count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
+                for (int i = 0; i < count; i++)
                 {
-                    // 3
-                    var currentNormal = hitBuffer[i].normal;
-                    // 4
-                    if (currentNormal.y > minGroundnormalY)
+                    if (string.Compare(hitBuffer[i].transform.gameObject.tag, "DynamicObject") == 0 ||
+                        string.Compare(hitBuffer[i].transform.gameObject.tag, "StaticObject") == 0)
                     {
-                        IsGrounded = true;
-
-                        if (yMovement)
+                        // 3
+                        Vector2 currentNormal = hitBuffer[i].normal;
+                        // 4
+                        if (currentNormal.y > minGroundnormalY)
                         {
-                            groundNormal = currentNormal;
-                            currentNormal.x = 0;
+                            IsGrounded = true;
+
+                            if (yMovement)
+                            {
+                                groundNormal = currentNormal;
+                                currentNormal.x = 0;
+                            }
+                        }
+                        // 5
+                        if (IsGrounded)
+                        {
+                            float projection = Vector2.Dot(velocity, currentNormal);
+                            if (projection < 0)
+                            {
+                                velocity -= projection * currentNormal;
+                            }
+                        }
+                        // 6
+                        else
+                        {
+                            velocity.x *= 0;
+                            velocity.y = Mathf.Min(velocity.y, 0);
+                        }
+
+                        // 7
+                        float modifiedDistance = hitBuffer[i].distance - shellRadius;
+                        if (modifiedDistance < distance)
+                        {
+                            distance = modifiedDistance;
+                            hitObject = hitBuffer[i].transform.gameObject;
                         }
                     }
-                    // 5
-                    if (IsGrounded)
-                    {
-                        var projection = Vector2.Dot(velocity, currentNormal);
-                        if (projection < 0)
-                        {
-                            velocity = velocity - projection * currentNormal;
-                        }
-                    }
-                    // 6
-                    else
-                    {
-                        velocity.x *= 0;
-                        velocity.y = Mathf.Min(velocity.y, 0);
-                    }
-
-                    // 7
-                    var modifiedDistance = hitBuffer[i].distance - shellRadius;
-                    distance = modifiedDistance < distance ? modifiedDistance : distance;
                 }
             }
             // 8
-            body.position = body.position + move.normalized * distance;
+            return move.normalized * distance;
+        }
+
+        void AlterMovement(Vector2 move, GameObject hitObject)
+        {
+            Rigidbody2D eRigid = hitObject.GetComponent<Rigidbody2D>();
+            if (eRigid != null)
+            {
+                eRigid.AddForce(move * hitForceMultiplier, ForceMode2D.Force);
+                eRigid.AddTorque(-hitTorqueMultiplier * Vector2.Dot(GetComponent<Transform>().position, eRigid.transform.position));
+
+                print("hit " + hitObject.transform.name);
+            }
+
         }
 
 
+        /*        void PerformMovement(Vector2 move, bool yMovement)
+                {
+                    // 1
+                    var distance = move.magnitude;
 
+                    if (distance > minMoveDistance)
+                    {
+                        // 2
+                        var count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
+                        for (var i = 0; i < count; i++)
+                        {
+                            // 3
+                            var currentNormal = hitBuffer[i].normal;
+                            // 4
+                            if (currentNormal.y > minGroundnormalY)
+                            {
+                                IsGrounded = true;
+
+                                if (yMovement)
+                                {
+                                    groundNormal = currentNormal;
+                                    currentNormal.x = 0;
+                                }
+                            }
+                            // 5
+                            if (IsGrounded)
+                            {
+                                var projection = Vector2.Dot(velocity, currentNormal);
+                                if (projection < 0)
+                                {
+                                    velocity = velocity - projection * currentNormal;
+                                }
+                            }
+                            // 6
+                            else
+                            {
+                                velocity.x *= 0;
+                                velocity.y = Mathf.Min(velocity.y, 0);
+                            }
+
+                            // 7
+                            var modifiedDistance = hitBuffer[i].distance - shellRadius;
+                            distance = modifiedDistance < distance ? modifiedDistance : distance;
+                        }
+                    }
+                    // 8
+                    body.position = body.position + move.normalized * distance;
+
+                    if (!yMovement) print(distance);
+                }
+        */
     }
 
 }

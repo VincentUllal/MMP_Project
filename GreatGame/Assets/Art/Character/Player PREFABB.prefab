@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4992528523638570907}
   - component: {fileID: 4992528523638570902}
   - component: {fileID: 4992528523638570905}
-  - component: {fileID: 4992528523638570903}
+  - component: {fileID: 4461971087902418696}
   m_Layer: 0
-  m_Name: Char1 PREFAB
+  m_Name: Player PREFABB
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7951233, y: 1.1710906}
   m_EdgeRadius: 0
---- !u!114 &4992528523638570903
+--- !u!114 &4461971087902418696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,8 +141,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4992528523638570906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11f4d7842401eab4cab6c02156934b9a, type: 3}
+  m_Script: {fileID: 11500000, guid: b223b11545111b742b9d263006dbaef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 5
-  JumpForce: 10
+  hitForceMultiplier: 100
+  hitTorqueMultiplier: 10
+  gravityModifier: 2
+  fallSpeedModifier: 1
+  minGroundnormalY: 0.65
+  velocity: {x: 0, y: 0}
+  maxSpeed: 8
+  jumpTakeOffSpeed: 8
+  jumpState: 0
+  move: {x: 0, y: 0}
