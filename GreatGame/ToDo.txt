@@ -1,19 +1,363 @@
+To Port over:
 
-ToDo tonight.
-
- - Interaction of Kinematic Objects.
-
- - Set KinematicObject.cs as Backend to all moving things.
-
- - Test Jumpstate progression
-
- - Moving features:
-	x - snappier controlls
-	- Wall slides with shift
-	- Wall reflect without shift
-	- Wall jumps
+Floormap RedBlue
+	Sprite Renderer
+	Box Collider 2D
 
 
-KinematicObjects what ifs:
+Disappearing Block
+	Sprite Renderer Disappear (B/R)
+	Box Collider 2D
+	Rigidbody2D
+	Disappearing Block (Script)
 
-	X - Hit general object:
+------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DisappearingBlock : MonoBehaviour
+{
+    public bool visible;
+    private Vector3 myPosition;
+    public GameObject myCharacter;
+    void Start()
+    {
+        myPosition = transform.position;    //save the position of the DisappearingBlock
+        if (visible)
+            {
+            gameObject.transform.SetPositionAndRotation(new Vector3(1000, 1000, 1000), new Quaternion());   //just tp it far away lol
+            Debug.Log("bye");
+            visible = !visible;
+            }else{
+                transform.position = myPosition;    //set the position to the saved Position
+                visible = !visible;
+                Debug.Log("hey");
+            }
+        myCharacter = GameObject.Find("Char1");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+        if (Mathf.Abs(myCharacter.GetComponent<Rigidbody2D>().velocity.y) < 0.1f){
+            Debug.Log("True");
+        } else {
+            Debug.Log("False");
+        }
+        //Debug.Log(Mathf.Abs(myCharacter.GetComponent<Rigidbody2D>().velocity.y));
+        TogglePlatform();
+    }
+
+    void TogglePlatform(){
+        if(Input.GetButtonDown("Jump"))
+         // &&Mathf.Abs(myCharacter.GetComponent<Rigidbody2D>().velocity.y) < 0.1f)
+         {
+            if (visible){
+            gameObject.transform.SetPositionAndRotation(new Vector3(1000, 1000, 1000), new Quaternion());   //just tp it far away lol
+            //Debug.Log("bye");
+            visible = !visible;
+            } else{
+                transform.position = myPosition;    //set the position to the saved Position
+                visible = !visible;
+                //Debug.Log("hey");
+            }
+        }
+    }
+}
+----------------------------------
+
+TimerBlock (1/2)
+	Sprite Renderer
+	Box Collider 2D
+	Timer BLock (Script)
+
+---------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TimerBlock : MonoBehaviour
+{
+    public bool visible;
+    public float interval;
+    private float timer;
+    private Vector3 myPosition;
+    void Start()
+    {
+        timer = 0;
+        myPosition = transform.position;    //save the position of the TimerBlock
+        if (visible)
+            {
+            gameObject.transform.SetPositionAndRotation(new Vector3(1000, 1000, 1000), new Quaternion());   //just tp it far away lol
+            visible = !visible;
+            }else{
+                transform.position = myPosition;    //set the position to the saved Position
+                visible = !visible;
+                SoundManager.PlaySound("Change_TimerBlock");
+            }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer > interval){
+            if (visible)
+            {
+            gameObject.transform.SetPositionAndRotation(new Vector3(1000, 1000, 1000), new Quaternion());   //just tp it far away lol
+            visible = !visible;
+            timer = 0;
+            SoundManager.PlaySound("Change_TimerBlock");
+            }else{
+                transform.position = myPosition;    //set the position to the saved Position
+                visible = !visible;
+                timer = 0;
+                //SoundManager.PlaySound("Change_TimerBlock");
+            }
+        }
+    }
+}
+-----------------------------------
+
+FallingBlock
+´	Sprite Renderer
+	Box Collider 2D
+	Rigidbody 2D
+		Dynamic
+		Mass 0.5
+		Angular Drag 0.05
+		Gravity Scale 1
+	
+
+
+
+Char1
+	SpriteRenderer
+	Rigidbody 2D
+	Box Collider 2D
+	Circle Collider 2D
+	Box Collider 2D
+	Char 2D Controller (Script)
+
+---------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Char2DController : MonoBehaviour
+{
+    public float MovementSpeed = 5;
+    public float JumpForce = 20;
+    public Rigidbody2D _rigidbody; //da wir rigidbody häufig brauchen, speichern wir eine referenz, wenn der Character erstellt wird start()
+    void Start()
+    // Start is called before the first frame update
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        //get input from out player
+        var horizontalMove = Input.GetAxisRaw("Horizontal") * MovementSpeed; //Left oder A = -1, Right oder D = 1 FÜR TASTATUR/CONTROLLER INPUT
+        // neuer Vector3 mit der x-Achse als input value
+        //Time.fixedDeltaTime is the Time elapsed since the last time this function was called
+        //so we move the same amount, independent from how often this function was called
+        transform.position += new Vector3(horizontalMove, 0, 0) * Time.deltaTime;
+
+        // Flip the Character
+        Vector3 characterScale = transform.localScale;
+        if(Input.GetAxisRaw("Horizontal") < 0){
+            characterScale.x = -1;
+        } else if(Input.GetAxisRaw("Horizontal") > 0){
+            characterScale.x = 1;
+        } else if (Input.GetAxisRaw("Vertical") < 0){   //crouch NOT FINISHED
+            characterScale.y = 0.5f;
+        } else if(!(Input.GetAxisRaw("Vertical") < 0)){
+            characterScale.y = 1;
+        }
+        transform.localScale = characterScale;
+
+        //default input system to detect Jump Input
+        if(Input.GetButtonDown("Jump") && Mathf.Abs(_rigidbody.velocity.y) < 0.1f){ //y-axis Geschwindigkeit verwenden, um nur einen Sprung zuzulassen
+            //"add a force in the y-axis" on the rigidbody", "The force we want to aplly is an impulse
+            _rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+        }
+        //if(Input.GetButtonDown("down")){
+        //    characterScale.x = -10;
+        //}
+    }
+}
+---------------------------------------
+
+Circle/BasketBall
+	Sprite Renderer
+	Circle Collider 2D
+	Rigidbody 2D
+
+
+DeathZone
+	Sprite Renderer - Square
+	Box Collider 2D
+	Respawn (Script)
+-------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Respawn : MonoBehaviour
+{
+    
+    //man braucht die Variablen nur hier/es muss nicht public sein, aber man will sie trotzdem im Inspector sehen --> [SerializeField]
+    [SerializeField] private Transform player;  //reference a player
+    [SerializeField] private Transform ball;  //reference a ball
+    [SerializeField] private Transform respawnPoint;  //reference a respawnPoint
+    [SerializeField] private Transform BBrespawnPoint;  //reference a basketball respawnPoint
+    void OnTriggerEnter2D(Collider2D other){    //"Collider other" registers when another GameObject contacts the hitbox
+        if(other.tag == "Player")
+        {
+            player.transform.position = respawnPoint.transform.position; //just set the position of the player to the position of the respawnPoint
+            Debug.Log("Player Respawned");
+        }else if(other.tag == "Ball")   //wenn ein Ball reinfällt
+        {
+            ball.transform.position = BBrespawnPoint.transform.position;
+            Debug.Log("BasketBall respawned");
+        }
+    }
+}
+-------------------------------------
+
+RespawnPoint
+
+BBrespawnPoint
+
+SoundManager
+	Audio Source
+		AudioClip - None
+		Output - None
+
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BBscored : MonoBehaviour
+{
+    [SerializeField] private Transform ball;  //reference a ball
+    [SerializeField] private Transform BBrespawnPoint;  //reference a respawnPoint
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "Ball")
+        {
+            //ball.transform.position = BBrespawnPoint.transform.position;
+            Debug.Log("YOU WON !!!!");
+        }
+    }
+}
+
+---------------------------------------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SoundManager : MonoBehaviour
+{
+    public static AudioClip change_TimerBlock;
+    static AudioSource audioSrc;
+    void Start()
+    {
+        change_TimerBlock = Resources.Load<AudioClip> ("Change_TimerBlock");
+        audioSrc = GetComponent<AudioSource> ();
+    }
+    void Update()
+    {
+        
+    }
+    public static void PlaySound (string clip){
+        switch (clip) {
+            case "Change_TimerBlock":
+            audioSrc.PlayOneShot(change_TimerBlock);
+            break;
+        }
+    }
+}
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
