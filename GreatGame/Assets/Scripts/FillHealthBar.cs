@@ -8,7 +8,6 @@ public class FillHealthBar : MonoBehaviour
     public Health playerHealth; //reference to the Health Script in Char1
     public Image fillImage; //the image of the healthbar
     private Slider slider; //reference to the Slider to set the value of it
-    // Start is called before the first frame update
     void Awake()
     {
         slider = GetComponent<Slider>();
