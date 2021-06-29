@@ -1,4 +1,21 @@
-To Port over:
+Türen/Gates : VinSa
+Gegner/Chaosmokeys (selbst Bewegend) : VinSa
+Waffen /Atacke : ?
+Menu (mit Stardbildschirm) : Alex (Heute/morgen)
+Moving Platforms : Sara
+Bewegung (Wallslides / internal Collision / Kine-Dyne) : Alex
+Merger von Vincent : Alex (heute)
+Score /Timer : VinSa : Merge Code Alex
+Disappear (Heute)
+
+-> Bis Freitag/Samstag
+
+----------------------------------------------------------------------------------------------------------
+___________________________________________________________________________________________________________
+___________________________________________________________________________________________________________
+___________________________________________________________________________________________________________
+
+To Port over: 28.6.21
 
 Floormap RedBlue
 	Sprite Renderer
