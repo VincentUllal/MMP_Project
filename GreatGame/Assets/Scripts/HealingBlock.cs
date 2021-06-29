@@ -8,7 +8,7 @@ public class HealingBlock : MonoBehaviour
     [SerializeField] private Transform player;  //reference a player
     public int healing = 2;
     void Update(){
-
+        //change
     }
     void OnTriggerEnter2D(Collider2D col){
         //float invincible = Time.deltaTime;
