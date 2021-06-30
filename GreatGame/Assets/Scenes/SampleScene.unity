@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 88566758}
   - component: {fileID: 88566757}
   - component: {fileID: 88566756}
+  - component: {fileID: 88566760}
   m_Layer: 0
   m_Name: Monkey
   m_TagString: enemy
@@ -435,6 +436,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &88566760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88566755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8439d08a2be6cba4ab55743e65eded6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  damage: 3
+  damageInterval: 1
 --- !u!1001 &108103408
 PrefabInstance:
   m_ObjectHideFlags: 0
