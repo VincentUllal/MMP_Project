@@ -673,8 +673,9 @@ GameObject:
   m_Component:
   - component: {fileID: 212603201}
   - component: {fileID: 212603200}
-  - component: {fileID: 212603199}
   - component: {fileID: 212603198}
+  - component: {fileID: 212603199}
+  - component: {fileID: 212603202}
   m_Layer: 0
   m_Name: DeathZone
   m_TagString: Untagged
@@ -786,6 +787,19 @@ Transform:
   m_Father: {fileID: 2064800143}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &212603202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212603197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052580c26b257e846a5c45f292543436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageToPlayer: 1
 --- !u!1 &241282866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2162,8 +2176,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1133703568}
   - component: {fileID: 1133703571}
-  - component: {fileID: 1133703570}
   - component: {fileID: 1133703569}
+  - component: {fileID: 1133703570}
+  - component: {fileID: 1133703572}
   m_Layer: 0
   m_Name: DeathZone (1)
   m_TagString: Untagged
@@ -2275,6 +2290,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1133703572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133703567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052580c26b257e846a5c45f292543436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageToPlayer: 1
 --- !u!1 &1213538071
 GameObject:
   m_ObjectHideFlags: 0
@@ -3058,8 +3086,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1826632978}
   - component: {fileID: 1826632981}
-  - component: {fileID: 1826632980}
   - component: {fileID: 1826632979}
+  - component: {fileID: 1826632980}
+  - component: {fileID: 1826632982}
   m_Layer: 0
   m_Name: DeathZone (2)
   m_TagString: Untagged
@@ -3171,6 +3200,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1826632982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826632977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052580c26b257e846a5c45f292543436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageToPlayer: 1
 --- !u!1 &1877841149
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,10 @@ namespace MMP.Mechanics
             if (collision.gameObject == player)
             {
                 var healthcomponent = player.GetComponent<PlayerHealth>();
+
+                if (healthcomponent.GetHealth() == healthcomponent.maxHealth)
+                    return;
+
                 healthcomponent.ChangeHealth(healingAmount);
                 Destroy(this.gameObject);
 
