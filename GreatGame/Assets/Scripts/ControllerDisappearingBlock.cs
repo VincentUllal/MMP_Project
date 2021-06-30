@@ -32,7 +32,8 @@ namespace MMP.Mechanics
                 Input.GetButtonDown("Jump") &&
                   (
                     (playerScript.jumpState == PlayerController.JumpState.Grounded) ||
-                    (playerScript.jumpState == PlayerController.JumpState.PrepareToJump)
+                    (playerScript.jumpState == PlayerController.JumpState.PrepareToJump) ||
+                    (playerScript.jumpState == PlayerController.JumpState.Jumping)
                   )
                )
 

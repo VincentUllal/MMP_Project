@@ -39,6 +39,24 @@ namespace MMP.Mechanics
             UpdateJumpState();
 
             base.Update();
+
+
+            //Crouching
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                Vector3 characterScale = transform.localScale;
+                characterScale.y = 0.5f;
+                transform.localScale = characterScale;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                Vector3 characterScale = transform.localScale;
+                characterScale.y = 1f;
+                transform.localScale = characterScale;
+                //ToDo
+                //Rescale bugs us into the ground.
+                    //Kinematic Movement Collision Handler will deal with that.
+            }
         }
 
         void UpdateJumpState()

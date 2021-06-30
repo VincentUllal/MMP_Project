@@ -151,10 +151,11 @@ namespace MMP.Mechanics
             {
                 if (string.Compare(hitObject.tag, "DynamicObject") == 0 && Time.time > pauseTillTime)
                 {
-                    if (string.Compare(hitObject.name, "FallingBlock") == 0) print("FOUND");
+                    //if (string.Compare(hitObject.name, "FallingBlock") == 0) print("FOUND");
                     AlterMovement(move, hitObject);
                     pauseTillTime += Time.time + 0.1f;
                 }
+
             }
 
             body.position += nextMoveModified;
