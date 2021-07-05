@@ -13,6 +13,11 @@ namespace MMP.Mechanics
 
         public Transform groundDetection;
 
+        private void Start()
+        {
+            gameObject.GetComponent<BoxCollider2D>().bounds.center.Set(transform.position.x, transform.position.y, 0);
+        }
+
         void Update()
         {
             transform.Translate(Vector2.right * speed * Time.deltaTime);
