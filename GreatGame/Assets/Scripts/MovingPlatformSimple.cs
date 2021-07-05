@@ -8,11 +8,12 @@ namespace MMP.Mechanics
     {
         private Vector3 pos1, pos2;
         public Vector2 pathwayDirection;
-        public float speed = 0.1f;
+        public float speed = 1f;
 
         private void Start()
         {
-            pos1 = transform.position;
+            pos1 = this.transform.position;
+            pos1.z = 0;
             Vector3 temp = pathwayDirection; //implicid z=0
             pos2 = pos1 + temp;
 

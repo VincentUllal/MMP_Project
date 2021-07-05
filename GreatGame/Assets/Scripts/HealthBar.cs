@@ -26,6 +26,7 @@ namespace MMP.Mechanics
             {
                 fillImage.enabled = true;
             }
+ 
             float fillValue = playerHealth.GetHealth() / playerHealth.maxHealth;
             /*
             if (fillValue >= slider.maxValue/3){
