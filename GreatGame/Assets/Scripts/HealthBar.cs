@@ -27,7 +27,7 @@ namespace MMP.Mechanics
                 fillImage.enabled = true;
             }
  
-            float fillValue = playerHealth.GetHealth() / playerHealth.maxHealth;
+            float fillValue = (float)playerHealth.GetHealth() / (float)playerHealth.maxHealth;
             /*
             if (fillValue >= slider.maxValue/3){
                 fillImage.color = new Vector4(0.7f, 0.3f, 0.3f);
