@@ -6,7 +6,7 @@ public class Key : MonoBehaviour
 {
     //isUsed makes sure that a key can only increase the score by one;
     //sometimes OnTriggerEnter2D is called twice (probably because
-    //the Char1 consists of multiple hitboxes)
+    //the Char1 consists of multiple hitboxes).
     private bool isUsed;
     void Start(){
         isUsed = false;
