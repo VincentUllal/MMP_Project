@@ -112,11 +112,11 @@ namespace MMP.Mechanics
             //for Animator
             if (Mathf.Abs(nextVelocity.x) > 0 )
             {
-                animator.SetFloat("Speed", 1);
+                animator.SetFloat("Speed", 1); // just a number > 0
             }
             else 
             {
-                animator.SetFloat("Speed", -1);
+                animator.SetFloat("Speed", -1); // just a number < 0
             }
             
         }
