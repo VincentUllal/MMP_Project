@@ -7,7 +7,7 @@ namespace MMP.Mechanics
     [RequireComponent(typeof(SpriteRenderer))]
     public class PlayerController : KinematicObject
     {
-
+        public Animator animator;
         public float maxSpeed = 8;
         public float jumpTakeOffSpeed = 8;
         public JumpState jumpState = JumpState.Grounded;
@@ -109,6 +109,16 @@ namespace MMP.Mechanics
                 spriteRenderer.flipX = true;
 
             nextVelocity = move * maxSpeed;
+            //for Animator
+            if (Mathf.Abs(nextVelocity.x) > 0 )
+            {
+                animator.SetFloat("Speed", 1);
+            }
+            else 
+            {
+                animator.SetFloat("Speed", -1);
+            }
+            
         }
 
         public enum JumpState
