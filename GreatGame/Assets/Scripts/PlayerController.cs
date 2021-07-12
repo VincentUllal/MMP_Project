@@ -110,13 +110,24 @@ namespace MMP.Mechanics
 
             nextVelocity = move * maxSpeed;
             //for Animator
-            if (Mathf.Abs(nextVelocity.x) > 0 )
+            //character is running && not in air
+            //idle --> running
+            if (Mathf.Abs(velocity.x) > 0 && Mathf.Abs(velocity.y) < 0.1)
             {
-                animator.SetFloat("Speed", 1); // just a number > 0
+                animator.SetFloat("xSpeed", 1); // just a number > 0
+                //animator.SetFloat("ySpeed", -1); // just a number > 0
             }
-            else 
+            //character is running && in air (no jump animation)
+            //running --> idle
+            else if (Mathf.Abs(velocity.x) > 0 && Mathf.Abs(velocity.y) > 0.1)
             {
-                animator.SetFloat("Speed", -1); // just a number < 0
+                animator.SetFloat("xSpeed", -1);
+                //animator.SetFloat("ySpeed", 1);
+            }
+            //character is standing --> idle
+            else {
+                animator.SetFloat("xSpeed", -1); // just a number < 0
+                //animator.SetFloat("ySpeed", -1); // just a number < 0
             }
             
         }

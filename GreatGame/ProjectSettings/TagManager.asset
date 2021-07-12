@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DynamicObject
   - StaticObject
+  - Hurtbox
   layers:
   - Default
   - TransparentFX
