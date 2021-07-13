@@ -11,10 +11,12 @@ namespace MMP.Mechanics
 
         public float timerInterval = 1.0f;
         private float timer = 0;
+        private bool blockA_playing = true;
 
         [SerializeField] GameObject TilemapBlockA;
         [SerializeField] GameObject TilemapBlockB;
-        [SerializeField] AudioSource SoundSource;
+        [SerializeField] AudioSource SoundSource_A;
+        [SerializeField] AudioSource SoundSource_B;
 
         void Start()
         {
@@ -30,15 +32,32 @@ namespace MMP.Mechanics
             timer += Time.deltaTime;
             if (timer > timerInterval)
             {
-                TilemapBlockA.SetActive(!TilemapBlockA.activeSelf);
-                TilemapBlockB.SetActive(!TilemapBlockB.activeSelf);
+                if(blockA_playing){
+                    TilemapBlockA.SetActive(!TilemapBlockA.activeSelf);
+                    TilemapBlockB.SetActive(!TilemapBlockB.activeSelf);
 
-                timer = 0;
+                    timer = 0;
 
-                if (SoundSource.isPlaying)
-                    Debug.Log("TimeBlock Interval is shorter than the link Audioclip");
+                    if (SoundSource_A.isPlaying)
+                        Debug.Log("TimeBlock Interval is shorter than the link Audioclip");
 
-                SoundSource.Play();     
+                    SoundSource_A.Play();
+                    blockA_playing = !blockA_playing;
+                    //Debug.Log("SOUND 1");
+                } else {
+                    TilemapBlockA.SetActive(!TilemapBlockA.activeSelf);
+                    TilemapBlockB.SetActive(!TilemapBlockB.activeSelf);
+
+                    timer = 0;
+
+                    if (SoundSource_B.isPlaying)
+                        Debug.Log("TimeBlock Interval is shorter than the link Audioclip");
+
+                    SoundSource_B.Play();
+                    blockA_playing = !blockA_playing;
+                    //Debug.Log("sound 2");
+                }
+                   
                 
             }
         }
