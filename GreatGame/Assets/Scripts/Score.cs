@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    private AudioSource audioS;
     public static int scoreAmount;
     public int requiredScore = 3;
     private Text scoreText;
@@ -13,6 +14,7 @@ public class Score : MonoBehaviour
     {
         scoreText = GetComponent<Text>();
         scoreAmount = 0;
+        audioS = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -20,6 +22,7 @@ public class Score : MonoBehaviour
     {
         scoreText.text = scoreAmount + " / " + requiredScore;
         if (scoreAmount >= requiredScore && !doorOpen){
+            audioS.Play();
             Debug.Log("door is open");
             doorOpen = true;
             //SoundManager.PlaySound("ZeldaSecret");

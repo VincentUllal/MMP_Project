@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7453983501806756276}
   - component: {fileID: 7453983501806756235}
   m_Layer: 0
-  m_Name: Monkey
+  m_Name: MonkeyPRE
   m_TagString: StaticObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -6,12 +6,11 @@ namespace MMP.Mechanics
 {
     public class SoundManager : MonoBehaviour
     {
-        public  AudioClip change_TimerBlock, doorOpen;
+        public  AudioClip change_TimerBlock;
         private AudioSource audioSrc;
         void Start()
         {
             change_TimerBlock = Resources.Load<AudioClip>("Change_TimerBlock");
-            doorOpen = Resources.Load<AudioClip> ("ZeldaSecret");
             audioSrc = GetComponent<AudioSource>();
         }
 
@@ -22,9 +21,6 @@ namespace MMP.Mechanics
                 case "Change_TimerBlock":
                     audioSrc.PlayOneShot(change_TimerBlock);
                     break;
-                case "ZeldaSecret":
-                    audioSrc.PlayOneShot(doorOpen);
-                    break;    
             }
         }
     }
