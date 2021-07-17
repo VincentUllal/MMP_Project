@@ -87,7 +87,7 @@ namespace MMP.Mechanics
          * - useTriggers: requieres a collider (Collisionbox) to have been involved
          * - SetLayerMask: There are up to 32 collision layers an object can be in. The gameObject shall only interact with others in its own layer.
          */
-        protected void Start()
+        protected virtual void Start()
         {
             contactFilter.useTriggers = false;
             contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));

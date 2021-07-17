@@ -6,30 +6,30 @@ namespace MMP.Mechanics
 {
     public class Respawn : MonoBehaviour
     {
-
         //man braucht die Variablen nur hier/es muss nicht public sein, aber man will sie trotzdem im Inspector sehen --> [SerializeField]
-        [SerializeField] private Transform respawnPoint;  //reference a respawnPoint
+        private GameObject player;
+
+        private void Start()
+        {
+            player = GameObject.Find("Player");
+        }
 
         void OnTriggerEnter2D(Collider2D other)
-        {    //"Collider other" registers when another GameObject contacts the hitbox
-            TriggerRespawn(other);
+        {
+            if (other.transform.gameObject == player)
+            {
+                TriggerRespawn(other);
+            }
+            else
+            {
+                other.gameObject.SetActive(false);
+            }
         }
 
         public void TriggerRespawn(Collider2D other) // allows external access
         {
-            other.transform.SetPositionAndRotation(respawnPoint.transform.position, new Quaternion());
-            other.attachedRigidbody.velocity = new Vector2();
-        }
-
-        public void TriggerRespawn(Collider2D other, Transform respawnPoint) // custom respawn point.
-        {
-            other.transform.SetPositionAndRotation(respawnPoint.transform.position, new Quaternion());
-            other.attachedRigidbody.velocity = new Vector2();
-        }
-
-        public void TriggerRespawn(Collider2D other, Vector2 respawnPoint) // by direct coordinates.
-        {
-            other.transform.SetPositionAndRotation(respawnPoint, new Quaternion());
+            Vector3 newPosition = player.GetComponent<PlayerController>().respawnPoint;
+            other.transform.SetPositionAndRotation(newPosition, new Quaternion());
             other.attachedRigidbody.velocity = new Vector2();
         }
     }

@@ -9,6 +9,7 @@ namespace MMP.Mechanics
     {
         public int maxHealth = 5;
         private int currentHealth;
+        [SerializeField] private GameObject intermission;
 
         private void Start()
         {
@@ -38,13 +39,9 @@ namespace MMP.Mechanics
 
         private void Death()
         {
-            Debug.Log("You Died");
-            SceneManager.LoadScene("MenuScene"); //< primitiv respawn
-
-            //ToDo
-            //Take away player controll
-            //play death animation
-            //either respawn or menu
+            intermission.GetComponent<IntermissionScene>().IntermissionSelect(0);
         }
+
+
     }
 }

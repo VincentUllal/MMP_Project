@@ -6,8 +6,8 @@ namespace MMP.Mechanics
 {
     public class ControllerTimerBlock : MonoBehaviour
     {
-        public bool initialVisibilityOfBlockA = true;
-        public bool initialVisibilityOfBlockB = false;
+        public bool initialVisibilityOfBlockA = false;
+        public bool initialVisibilityOfBlockB = true;
 
         public float timerInterval = 1.0f;
         private float timer = 0;

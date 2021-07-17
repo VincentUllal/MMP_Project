@@ -3,30 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour
+namespace MMP.Score
 {
-    private AudioSource audioS;
-    public static int scoreAmount;
-    public int requiredScore = 3;
-    private Text scoreText;
-    private bool doorOpen = false;
-    void Start()
+    public class Score : MonoBehaviour
     {
-        scoreText = GetComponent<Text>();
-        scoreAmount = 0;
-        audioS = GetComponent<AudioSource>();
-    }
+        private AudioSource audioS;
+        public static int scoreAmount;
+        public int requiredScore;
+        private Text scoreText;
+        private bool doorOpen = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        scoreText.text = scoreAmount + " / " + requiredScore;
-        if (scoreAmount >= requiredScore && !doorOpen){
-            audioS.Play();
-            Debug.Log("door is open");
-            doorOpen = true;
-            //SoundManager.PlaySound("ZeldaSecret");
-            //open a door or something
+        [SerializeField] private GameObject portal, note;
+
+        void Start()
+        {
+            requiredScore = GameObject.FindGameObjectsWithTag("key").Length;
+            scoreText = GetComponent<Text>();
+            scoreAmount = 0;
+            audioS = GetComponent<AudioSource>();
+        }
+
+        void Update()
+        {
+            scoreText.text = scoreAmount + " / " + requiredScore;
+            if (scoreAmount >= requiredScore && !doorOpen)
+            {
+                audioS.Play();
+                doorOpen = true;
+
+                portal.SetActive(true);
+                note.SetActive(false);
+            }
         }
     }
 }

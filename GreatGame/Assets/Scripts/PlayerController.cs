@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace MMP.Mechanics
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public class PlayerController : KinematicObject
     {
+        public Vector3 respawnPoint;
+
+        public volatile bool controlEnabled = true;
+
         public Animator animator;
         public float maxSpeed = 8;
         public float jumpTakeOffSpeed = 8;
@@ -23,39 +26,47 @@ namespace MMP.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        protected override void Start()
+        {
+            respawnPoint = this.transform.position;
+            base.Start();
+        }
+
         protected override void Update()
         {
-
-            move.x = Input.GetAxis("Horizontal");
-            if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+            if (controlEnabled)
             {
-                jumpState = JumpState.PrepareToJump;
-                //jump = true;
-            }
-            else if (Input.GetButtonUp("Jump"))
-            {
-                stopJump = true;
-            }
-            UpdateJumpState();
+                move.x = Input.GetAxis("Horizontal");
+                if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+                {
+                    jumpState = JumpState.PrepareToJump;
+                    //jump = true;
+                }
+                else if (Input.GetButtonUp("Jump"))
+                {
+                    stopJump = true;
+                }
+                UpdateJumpState();
 
-            base.Update();
+                base.Update();
 
 
-            //Crouching
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                Vector3 characterScale = transform.localScale;
-                characterScale.y = 0.5f;
-                transform.localScale = characterScale;
-            }
-            if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                Vector3 characterScale = transform.localScale;
-                characterScale.y = 1f;
-                transform.localScale = characterScale;
-                //ToDo
-                //Rescale bugs us into the ground.
+                //Crouching
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    Vector3 characterScale = transform.localScale;
+                    characterScale.y = 0.5f;
+                    transform.localScale = characterScale;
+                }
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    Vector3 characterScale = transform.localScale;
+                    characterScale.y = 1f;
+                    transform.localScale = characterScale;
+                    //ToDo
+                    //Rescale bugs us into the ground.
                     //Kinematic Movement Collision Handler will deal with that.
+                }
             }
         }
 
