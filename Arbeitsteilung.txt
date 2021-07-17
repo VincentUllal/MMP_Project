@@ -1,0 +1,66 @@
+Alex:
+	Scripts:
+		- PlayerScripts und Kinematic behaviour
+		- Respawn, Checkpoint Scripts
+		- Infocards/Speachbubbles
+		- Main- & Optionsmenu + Volumslider/controll + Persistent volumelevels.
+		- SceneManagement and Portal-End
+		- Esc-Menu and Death-Scene
+		- 
+		- Merged, debugged and revised all codesegments to comparable standards
+		- Bugfixing for/in Build versions
+	Scene:
+		- Constructed Scene hierarchy
+		- Tilemaps: Floor, Deathblock, TimerBlock, Dissapearing Block.
+		- Checkpoints
+		- The "Story"
+		- MenuScene and WinScene
+		- Esc-Menu and Death-Scene
+		- minor parts of the level design
+		-
+		- Most Mergers
+		
+Vinzent:
+	Scripts:
+		- Audio: walking animation
+	Scene:
+		-Interactabes (keys, health)
+		-healthbar
+		-score (keys)
+		-Special Tiles (Disappearing Blocks, Timer Blocks, Spikes)
+
+Sara:
+	Script:
+		- Chaosmonkeys + Damange/Death
+		- Movingplatform
+	Scene:
+		- Chaosmonkeys
+		- Deahtzone
+		- Movingplatformen
+
+Thao:
+	Graphics:
+		- Background + Frames
+		- Background StartMenu
+		- Player (Animation Sprites)
+		- ChaosMonkeys
+		- Tiles (Main, Disappearing,Timed 1 & 2)
+		- KeyItem
+		- HealthItem
+		- Checkpoint
+		- Portal
+		- Basketball
+		- Speechbubble
+		- InfoCard
+		
+	StartMenu:
+		- stylelised 
+		- Buttons
+		- Font
+		
+
+		
+
+
+
+
